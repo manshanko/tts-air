@@ -57,7 +57,7 @@ jobs:
 
         cp README.md "$staging/"
 
-        cp "target/x86_64-pc-windows-msvc/release/{saapi64.dll, tts-air-proxy.exe}" "$staging/"
+        cp "target/x86_64-pc-windows-msvc/release/{saapi64.dll,tts-air-proxy.exe}" "$staging/"
         7z a "$staging.zip" "$staging"
         echo "ASSET=$staging.zip" >> $GITHUB_ENV
 
