@@ -58,7 +58,7 @@ jobs:
 
         cp "target/x86_64-pc-windows-msvc/release/saapi64.dll" "$staging/"
         cp "target/x86_64-pc-windows-msvc/release/tts-air-proxy.exe" "$staging/"
-        7z a "$staging.zip" "$staging"
+        7z a "$staging.zip" "./$staging/*"
         echo "ASSET=$staging.zip" >> $GITHUB_ENV
 
     - name: Upload release archive
