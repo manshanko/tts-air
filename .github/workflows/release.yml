@@ -46,7 +46,7 @@ jobs:
         components: rust-std
 
     - name: Build release binary
-      run: cargo build --verbose --release -Zbuild-std=std,panic_abort -Zbuild-std-features=,
+      run: cargo build --verbose --release --target x86_64-pc-windows-msvc "-Zbuild-std=std,panic_abort" "-Zbuild-std-features=,"
 
     - name: Build archive
       shell: bash
