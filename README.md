@@ -20,8 +20,6 @@ See [supported languages and voices](https://support.microsoft.com/en-us/windows
 
 Diablo 4's 3rd party screen reader support is provided by [Tolk](https://github.com/dkager/tolk/).
 Of the supported 3rd party screen readers I tried implementing a few:
-* SAAPI
 * Microsoft Speech API - required an installation step for some registry additions and was too slow
 * NVDA - I had performance problems while testing it
-
-I picked the SAAPI interface due to simplicity.
+* SAAPI - easiest to implement and the one I went with
