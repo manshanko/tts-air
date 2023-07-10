@@ -7,6 +7,8 @@ For privacy reasons the WebSocket server in `tts-air-proxy` only accepts local c
 
 ## Usage
 
+Download [latest release](https://github.com/ManShanko/tts-air/releases/latest).
+
 The DLL `saapi64.dll` requires being in the load path for Diablo 4.
 Placing next to `Diablo IV.exe` works best.
 The parent directory of Diablo 4 can be opened in the `battle.net` app at the Diablo 4 game page with *Options* -> *Show in Explorer* (*Options* is the gear icon next to the play button).
