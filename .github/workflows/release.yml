@@ -50,7 +50,7 @@ jobs:
 
     - name: Build archive
       shell: bash
-      run |
+      run: |
         outdir="./target/x86_64-pc-windows-msvc"
         staging="tts-air-${{ needs.create-release.outputs.ta_version }}-x86_64-pc-windows-msvc"
         mkdir -p "$staging"
