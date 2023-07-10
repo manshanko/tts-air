@@ -1,0 +1,72 @@
+# adapted from ripgrep's release.yml:
+# https://github.com/BurntSushi/ripgrep/blob/4386b8e805e273a9795ad4e256c455c74407c949/.github/workflows/release.yml
+
+name: release
+on:
+  push:
+    tags:
+    - "[0-9]+.[0-9]+.[0-9]+"
+jobs:
+  create-release:
+    name: create-release
+    runs-on: ubuntu-22.04
+    outputs:
+      upload_url: ${{ steps.releases.outputs.upload_url }}
+      ta_version: ${{ env.TA_VERSION }}
+    steps:
+      - name: Get release version from tag
+        shell: bash
+        if: env.TA_VERSION == ''
+        run: |
+          echo "TA_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          echo "version is: ${{ env.TA_VERSION }}"
+      - name: Create GitHub release
+        id: release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.TA_VERSION }}
+          release_name: ${{ env.TA_VERSION }}
+
+  build-release:
+    name: build-release
+    needs: ['create-release']
+    runs-on: windows-2022
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install Rust
+      uses: dtolnay/rust-toolchain@master
+      with:
+        toolchain: nightly
+        target: x86_64-pc-windows-msvc
+        components: rust-std
+
+    - name: Build release binary
+      run: cargo build --verbose --release -Zbuild-std=std,panic_abort -Zbuild-std-features=,
+
+    - name: Build archive
+      shell: bash
+      run |
+        outdir="./target/x86_64-pc-windows-msvc"
+        staging="tts-air-${{ needs.create-release.outputs.ta_version }}-x86_64-pc-windows-msvc"
+        mkdir -p "$staging"
+
+        cp README.md "$staging/"
+
+        cp "target/x86_64-pc-windows-msvc/release/{saapi64.dll, tts-air-proxy.exe}" "$staging/"
+        7z a "$staging.zip" "$staging"
+        echo "ASSET=$staging.zip" >> $GITHUB_ENV
+
+    - name: Upload release archive
+      uses: actions/upload-release-asset@v1.0.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        asset_path: ${{ env.ASSET }}
+        asset_name: ${{ env.ASSET }}
+        asset_content_type: application/octet-stream

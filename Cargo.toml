@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "crates/capture",
+    "crates/ipc",
+    "crates/proxy",
+]
+resolver = "2"

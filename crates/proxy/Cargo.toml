@@ -1,0 +1,22 @@
+[package]
+name = "tts-air-proxy"
+version = "1.0.0"
+edition = "2021"
+
+[features]
+unsafe-connection = []
+
+[dependencies]
+tts-air-ipc = { path = "../ipc" }
+env_logger = { version = "0.10.0", default-features = false, features = ["humantime"] }
+log = "0.4.19"
+tungstenite = "0.19.0"
+serde_json = "1.0.99"
+
+[dependencies.windows-sys]
+version = "0.48"
+features = [
+    "Win32_System_LibraryLoader",
+    "Win32_System_Threading",
+]
+

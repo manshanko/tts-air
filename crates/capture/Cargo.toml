@@ -1,0 +1,16 @@
+[package]
+name = "tts-air"
+version = "1.0.0"
+edition = "2021"
+
+[lib]
+name = "saapi64"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+tts-air-ipc = { path = "../ipc" }
+env_logger = { version = "0.10.0", default-features = false, features = ["humantime"] }
+log = "0.4.19"
+windows-sys = "0.48"
+
