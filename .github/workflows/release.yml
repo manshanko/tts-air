@@ -11,7 +11,7 @@ jobs:
     name: create-release
     runs-on: ubuntu-22.04
     outputs:
-      upload_url: ${{ steps.releases.outputs.upload_url }}
+      upload_url: ${{ steps.release.outputs.upload_url }}
       ta_version: ${{ env.TA_VERSION }}
     steps:
       - name: Get release version from tag
