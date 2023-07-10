@@ -1,3 +1,7 @@
+[profile.release]
+lto = "thin"
+panic = "abort"
+
 [workspace]
 members = [
     "crates/capture",
