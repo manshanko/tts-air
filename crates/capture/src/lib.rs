@@ -172,7 +172,7 @@ fn server_listen(
                     continue;
                 }
                 Err(e) => {
-                    pipe = Some(p);
+                    drop(p);
                     log::error!("pipe listener had unexpected error {e:?}");
                     // reduce potential log spam
                     thread::sleep(Duration::from_millis(500));
