@@ -28,6 +28,10 @@ unsafe extern "system" fn DllMain(
 }
 
 unsafe fn init(hwnd: isize) {
+    std::panic::set_hook(Box::new(|e| {
+        log::debug!("err: {e:?}");
+    }));
+
     if let Ok(mut pump) = PUMP.lock() {
         if pump.is_none() {
             let (send, recv) = mpsc::channel();
@@ -65,6 +69,8 @@ unsafe fn init(hwnd: isize) {
 
                 thread::spawn(|| server_broadcast(recv, pipe_recv));
                 thread::spawn(|| server_listen(pipe_send));
+
+                log::debug!("successfully started tts-air-capture");
             });
         }
     }

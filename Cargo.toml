@@ -1,7 +1,6 @@
 [profile.release]
 opt-level = "s"
 lto = "thin"
-panic = "abort"
 
 [workspace]
 members = [
