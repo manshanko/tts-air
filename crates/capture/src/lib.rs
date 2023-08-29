@@ -50,19 +50,21 @@ unsafe fn init(hwnd: isize) {
                 }
 
                 if cfg!(debug_assertions) {
-                    let Ok(fd) = std::fs::OpenOptions::new()
+                    match std::fs::OpenOptions::new()
                         .create(true)
-                        .append(true)
-                        .open("tts_air.log") else {
-                            // failed to open log
-                            return;
-                        };
-
-                    let _ = env_logger::builder()
-                        .target(env_logger::fmt::Target::Pipe(Box::new(fd)))
-                        .filter(None, log::LevelFilter::Trace)
-                        //.filter(None, log::LevelFilter::Info)
-                        .try_init();
+                        .write(true)
+                        .truncate(true)
+                        .open("tts_air.log")
+                    {
+                        Ok(fd) => {
+                            let _ = env_logger::builder()
+                                .target(env_logger::fmt::Target::Pipe(Box::new(fd)))
+                                .filter(None, log::LevelFilter::Trace)
+                                //.filter(None, log::LevelFilter::Info)
+                                .try_init();
+                        }
+                        _ => (),
+                    }
                 }
 
                 let (pipe_send, pipe_recv) = mpsc::channel::<tts_air_ipc::NamedPipe>();
